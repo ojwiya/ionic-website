@@ -17,14 +17,12 @@
       <div class="item item-divider">
         Corporate Leadership
       </div>
-      <ion-list>
-      <ion-item ng-repeat="leader in leaders" class="item item-text-wrap item-avatar">
+      <div ng-repeat="leader in leaders" class="item item-text-wrap item-avatar">
           <img ng-src="{{baseURL+leader.image}}">
           <h2>{{leader.name}}</h2>
           <h4>{{leader.designation}}</h4>
           <p>{{leader.description}}</p>
-      </ion-item>
-    </ion-list>
+      </div>
     </div>
 
 
