@@ -39,6 +39,35 @@ angular.module('conFusion.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
+
+// Create the reserve modal that we will use later
+  $ionicModal.fromTemplateUrl('templates/reserve.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.reserveform = modal;
+  });
+
+  // Triggered in the reserve modal to close it
+  $scope.closeReserve = function() {
+    $scope.reserveform.hide();
+  };
+
+  // Open the reserve modal
+  $scope.reserve = function() {
+    $scope.reserveform.show();
+  };
+
+  // Perform the reserve action when the user submits the reserve form
+  $scope.doReserve = function() {
+    console.log('Doing reservation', $scope.reservation);
+
+    // Simulate a reservation delay. Remove this and replace with your reservation
+    // code if using a server system
+    $timeout(function() {
+      $scope.closeReserve();
+    }, 1000);
+  };
+
 })
 
   .controller('MenuController', ['$scope', 'menuFactory', 'baseURL', function($scope, menuFactory, baseURL) {
@@ -162,8 +191,20 @@ angular.module('conFusion.controllers', [])
   .controller('IndexController', ['$scope', 'menuFactory', 'baseURL', 'corporateFactory', function($scope, menuFactory, baseURL, corporateFactory) {
 
     $scope.baseURL = baseURL;
-    $scope.leader = corporateFactory.get({id:3});
+    $scope.showLeader = false;
+    $scope.leader = corporateFactory.get({id:3})
+      .$promise.then(
+      function(response){
+        $scope.leader = response;
+        $scope.showLeader = true;
+      },
+      function(response) {
+        $scope.message = "Error: "+response.status + " " + response.statusText;
+      }
+    );
+
     $scope.showDish = false;
+    $scope.showPromotion = false;
     $scope.message="Loading ...";
     $scope.dish = menuFactory.getDishes().get({id:0})
       .$promise.then(
@@ -175,7 +216,18 @@ angular.module('conFusion.controllers', [])
           $scope.message = "Error: "+response.status + " " + response.statusText;
         }
       );
-    $scope.promotion = menuFactory.getPromotion().get({id:0});
+    $scope.promotion = menuFactory.getPromotion().get({id:0})
+      .$promise.then(
+        function(response){
+          $scope.promotion = response;
+          $scope.showPromotion = true;
+        },
+        function(response) {
+          $scope.message = "Error: "+response.status + " " + response.statusText;
+        }
+      );
+
+
 
   }])
 
