@@ -171,15 +171,8 @@ angular.module('conFusion.controllers', [])
         }
       );
 
-// .fromTemplate() method
-    var template = '<ion-popover-view><ion-header-bar> <h1 class="title">My Popover Title</h1> </ion-header-bar> <ion-content> Hello! </ion-content></ion-popover-view>';
-
-    $scope.popover = $ionicPopover.fromTemplate(template, {
-      scope: $scope
-    });
-
     // .fromTemplateUrl() method
-    $ionicPopover.fromTemplateUrl('my-popover.html', {
+    $ionicPopover.fromTemplateUrl('templates/dish-detail-popover.html', {
       scope: $scope
     }).then(function(popover) {
       $scope.popover = popover;
