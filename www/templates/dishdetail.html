@@ -1,4 +1,20 @@
+<script id="my-popover.html" type="text/ng-template">
+  <ion-popover-view>
+    <ion-header-bar>
+      <h1 class="title">My Popover Title</h1>
+    </ion-header-bar>
+    <ion-content>
+      Hello!
+    </ion-content>
+  </ion-popover-view>
+</script>
 <ion-view view-title="Dish Details">
+  <ion-nav-buttons side="secondary">
+    <div class="buttons">
+      <button class="button button-icon icon ion-more"
+              ng-click="openPopover($event)"></button>
+    </div>
+  </ion-nav-buttons>
   <ion-content>
     <div class="card">
       <div class="item item-body item-text-wrap">
