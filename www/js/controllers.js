@@ -153,7 +153,7 @@ angular.module('conFusion.controllers', [])
     };
   }])
 
-  .controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', 'baseURL', '$ionicPopover', 'favoriteFactory', function($scope, $stateParams, menuFactory, baseURL, $ionicPopover, favoriteFactory) {
+  .controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', 'baseURL', '$ionicPopover', 'favoriteFactory', '$ionicModal', function($scope, $stateParams, menuFactory, baseURL, $ionicPopover, favoriteFactory, $ionicModal) {
 
     $scope.baseURL = baseURL;
     $scope.dish = {};
@@ -177,7 +177,7 @@ angular.module('conFusion.controllers', [])
     }).then(function(popover) {
       $scope.popover = popover;
     });
-    
+
     $scope.openPopover = function($event) {
       $scope.popover.show($event);
     };
@@ -191,7 +191,49 @@ angular.module('conFusion.controllers', [])
       console.log("index is " + $scope.dish.id);
       favoriteFactory.addToFavorites($scope.dish.id);
       $scope.popover.hide();
-    }
+    };
+
+    $ionicModal.fromTemplateUrl('templates/dish-comment.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.commentForm = modal;
+    });
+
+    $scope.closeComment = function() {
+      $scope.commentForm.hide();
+    };
+
+    $scope.comment = function() {
+      $scope.myComment = {rating:5, comment:"", author:"", date:""};
+      $scope.commentForm.show();
+      $scope.popover.hide();
+    };
+
+    $scope.doComment = function() {
+      $scope.myComment.date = new Date().toISOString();
+      console.log('Add comment', $scope.myComment);
+      $scope.dish.comments.push($scope.myComment);
+      menuFactory.getDishes().update({id:$scope.dish.id},$scope.dish);
+      $scope.closeComment();
+
+      //// Simulate a reservation delay. Remove this and replace with your reservation
+      //// code if using a server system
+      //$timeout(function() {
+      //  $scope.closeComment();
+      //}, 1000);
+    };
+
+    //$scope.submitComment = function () {
+    //  $scope.mycomment.date = new Date().toISOString();
+    //  console.log($scope.mycomment);
+    //  $scope.dish.comments.push($scope.mycomment);
+    //
+    //  menuFactory.getDishes().update({id:$scope.dish.id},$scope.dish);
+    //  $scope.commentForm.$setPristine();
+    //  $scope.mycomment = {rating:5, comment:"", author:"", date:""};
+    //}
+
+
 
   }])
 
