@@ -119,8 +119,18 @@ angular.module('conFusion.controllers', [])
         });
 
         $scope.registerform.show();
-
       };
+      $scope.choosePicture = function() {
+        $cordovaCamera.getPicture(options).then(function(imageData) {
+          $scope.registration.imgSrc = "data:image/jpeg;base64," + imageData;
+        }, function(err) {
+          console.log(err);
+        });
+
+        $scope.registerform.show();
+      };
+
+
     });
 
 })
